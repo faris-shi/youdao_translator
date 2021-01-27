@@ -1,2 +1,2 @@
-from .youdao_trans import YoudaoTranslator
-from .youdao_trans import cli
+from .translator import YoudaoTranslator
+from .translator import cli
