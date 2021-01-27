@@ -1,0 +1,3 @@
+import translator
+
+translator.cli()
