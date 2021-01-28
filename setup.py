@@ -19,7 +19,7 @@ name = 'youdao-trans-cli'
 
 setup(
     name = name,
-    version = '0.3',
+    version = '0.4',
     packages = find_packages(),
     description = 'simple approach to translate English to Chinese by youdao-translator-cli',
     long_description = long_description,
