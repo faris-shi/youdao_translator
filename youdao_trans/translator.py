@@ -1,8 +1,11 @@
 from pyquery import PyQuery as pq
-from collections import namedtuple
 import click
-from prettytable import PrettyTable
 import requests
+from rich.console import Console
+from rich.markdown import Markdown
+
+from collections import namedtuple
+
 
 class YoudaoTranslator:
     """
@@ -41,7 +44,9 @@ class YoudaoTranslator:
         cs = []
         Collins = namedtuple('Collins', ['definition', 'examples'])
         for instance in doc.items("#collinsResult #NAMING1 ul li"):
-            definition = instance.find('.collinsMajorTrans p').eq(0).text()
+            definition = instance.find('.collinsMajorTrans p').eq(0).text().strip()
+            if len(definition) == 0:
+                break
             exmaples = []
             for example_doc in instance.items('.examples'):
                 ps = example_doc.find('p')
@@ -60,19 +65,35 @@ class YoudaoTranslator:
         values = {key: value(doc) for key, value in self._config.items()}
         return Translation(**values)
 
+def _magic_collins(translation, num_example):
+    if num_example <= 0:
+        return ''
+    output = ''
+    for index, collins in enumerate(translation.collins, 1):
+        definition = collins.definition
+        if index > num_example:
+            break 
+        examples = '\n\n\t- '.join(collins.examples)
+        output += f'\n{index}. {definition}\n\n\t- {examples}'
+    return output
 
-def _magic(word, translation):
-    definition = '\n'.join(translation.definition)
-    print(definition)
-    print(translation.addition)
+def _magic(word, translation, num_example):
+    definition = '\n> '.join(translation.definition)
+    addition = translation.addition
+    collins = _magic_collins(translation, num_example)
+    output = f'# {word.upper()}\n> {definition}\n\n> {addition}\n\n{collins}'
+
+    console = Console()
+    console.print(Markdown(output))
 
 @click.command()
 @click.argument('word')
-def cli(word):
+@click.option('--example', default=3, type=int, help = "The number of detailed definitions and examples")
+def cli(word, example):
     if not word:
         raise ValueError('please enter english word')
     translation = YoudaoTranslator().translate(word)
-    _magic(word, translation)
+    _magic(word, translation, example)
 
 if __name__ == "__main__":
     cli()

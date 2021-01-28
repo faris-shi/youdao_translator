@@ -2,6 +2,11 @@
 
 English translator from CLI, really cool. 
 
+You Dao is a famous translator website between Chinese and English. This library is only for individual study purposes. please see the official version for other purposes:
+
+- http://youdao.com/
+
+
 # Installation
 
 ```
@@ -10,12 +15,16 @@ pip install youdao-trans-cli
 youdao-trans-cli [word]
 ```
 
+# Usage
+
+![screen_shot.png](https://i.loli.net/2021/01/28/5PLogI6XxzW8wU2.png)
+
 ## Dependencies
 
-- pyquery >= 1.4.3
-- click >= 4.1
-- prettytable >= 2.0.0
-- requests >= 2.4
+- pyquery
+- click
+- rich
+- requests
 
 ## Try it without installing
 

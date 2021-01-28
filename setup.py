@@ -9,17 +9,17 @@ except (IOError, ImportError):
         long_description = fd.read()
 
 requirements = [
-    'pyquery >= 1.4.3',
-    'click >= 4.1',
-    'prettytable >= 2.0.0',
-    'requests >= 2.4'
+    'pyquery',
+    'click',
+    'rich',
+    'requests'
 ]
 
 name = 'youdao-trans-cli'
 
 setup(
     name = name,
-    version = '0.2',
+    version = '0.3',
     packages = find_packages(),
     description = 'simple approach to translate English to Chinese by youdao-translator-cli',
     long_description = long_description,
