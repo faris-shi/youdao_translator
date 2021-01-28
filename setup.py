@@ -12,7 +12,7 @@ requirements = [
     'pyquery',
     'click',
     'rich',
-    'requests'
+    'requests',
 ]
 
 name = 'youdao-trans-cli'

@@ -17,7 +17,11 @@ youdao-trans-cli [word]
 
 # Usage
 
-![screen_shot.png](https://i.loli.net/2021/01/28/5PLogI6XxzW8wU2.png)
+![1.png](https://i.loli.net/2021/01/29/qc7DPH91pKFxjlb.png)
+
+![2.png](https://i.loli.net/2021/01/29/DWcXuAwEIy67UOj.png)
+
+![3.png](https://i.loli.net/2021/01/29/ToL54AHDJkP3GmU.png)
 
 ## Dependencies
 

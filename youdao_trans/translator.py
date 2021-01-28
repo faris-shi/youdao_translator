@@ -3,7 +3,6 @@ import click
 import requests
 from rich.console import Console
 from rich.markdown import Markdown
-
 from collections import namedtuple
 
 
@@ -30,7 +29,7 @@ class YoudaoTranslator:
         for pron in doc.items('.baav .pronounce'):
             transcription = pron.find('span').eq(0).text().strip()
             voice_url = YoudaoTranslator._VOICE_URL_.format(pron.find('a').eq(0).attr('data-rel'))
-            pronounces.append(Pronounce(transcription=transcription, voice_url=voice_url))    
+            pronounces.append(Pronounce(transcription=transcription, voice_url=voice_url))
         return pronounces        
             
     def _parse_definition(self, doc):
@@ -43,15 +42,15 @@ class YoudaoTranslator:
     def _parse_collins_examples(self, doc):
         cs = []
         Collins = namedtuple('Collins', ['definition', 'examples'])
-        for instance in doc.items("#collinsResult #NAMING1 ul li"):
-            definition = instance.find('.collinsMajorTrans p').eq(0).text().strip()
-            if len(definition) == 0:
-                break
+        for instance in doc.items("#collinsResult .wt-container ul li"):
+            definition = instance.find('.collinsMajorTrans p').eq(0).text().strip()            
             exmaples = []
             for example_doc in instance.items('.examples'):
                 ps = example_doc.find('p')
                 exmaples.append(f'{ps.eq(0).text().strip()}\t\t{ps.eq(1).text().strip()}')
-            cs.append(Collins(definition=definition, examples=exmaples))
+            
+            if len(definition) != 0 and len(exmaples) != 0:
+                cs.append(Collins(definition=definition, examples=exmaples))
         return cs
     
     def _get_content(self, url):
@@ -73,8 +72,8 @@ def _magic_collins(translation, num_example):
         definition = collins.definition
         if index > num_example:
             break 
-        examples = '\n\n\t- '.join(collins.examples)
-        output += f'\n{index}. {definition}\n\n\t- {examples}'
+        examples = '\n\t- '.join(collins.examples)
+        output += f'\n----\n{index}. {definition}\n\t- {examples}'
     return output
 
 def _magic(word, translation, num_example):
@@ -88,7 +87,7 @@ def _magic(word, translation, num_example):
 
 @click.command()
 @click.argument('word')
-@click.option('--example', default=3, type=int, help = "The number of detailed definitions and examples")
+@click.option('--example', default=5, type=int, help = "The number of detailed definitions and examples")
 def cli(word, example):
     if not word:
         raise ValueError('please enter english word')
