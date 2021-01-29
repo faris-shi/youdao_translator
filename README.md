@@ -10,7 +10,7 @@ You Dao is a famous translator website between Chinese and English. This library
 # Installation
 
 ```
-pip install youdao-trans-cli
+pip install youdao-translator
 
 youdao-trans-cli [word]
 ```

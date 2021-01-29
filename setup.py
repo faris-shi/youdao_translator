@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
@@ -15,11 +14,11 @@ requirements = [
     'requests',
 ]
 
-name = 'youdao-trans-cli'
+name = 'youdao_translator'
 
 setup(
     name = name,
-    version = '0.4',
+    version = '1.0.0',
     packages = find_packages(),
     description = 'simple approach to translate English to Chinese by youdao-translator-cli',
     long_description = long_description,
@@ -32,7 +31,7 @@ setup(
     install_requires=requirements,
     entry_points={
         'console_scripts':[
-            'youdao-trans-cli=youdao_trans:cli' 
+            'youdao-trans-cli=youdao_translator:cli' 
         ]
     },
     classifiers=[
@@ -52,5 +51,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-    ]
+    ],
+    keywords         = 'youdao translator english cli command',
+    py_modules       = [name]
 )

@@ -3,8 +3,12 @@ import click
 import requests
 from rich.console import Console
 from rich.markdown import Markdown
-from collections import namedtuple
+from playsound import playsound 
 
+from collections import namedtuple
+from time import sleep
+from urllib.request import urlopen
+from tempfile import NamedTemporaryFile
 
 class YoudaoTranslator:
     """
@@ -17,7 +21,7 @@ class YoudaoTranslator:
 
     def __init__(self):
         self._config = {
-            'pronounce': self._parse_pronounce, 
+            'pronounces': self._parse_pronounce, 
             'definition': self._parse_definition, 
             'addition': self._parse_addition, 
             'collins': self._parse_collins_examples
@@ -85,14 +89,40 @@ def _magic(word, translation, num_example):
     console = Console()
     console.print(Markdown(output))
 
+def _play_sound(translation, times):
+    pronounces = translation.pronounces
+    if not pronounces or len(pronounces) == 0 or times <= 0:
+        return
+    try:
+        sound_url = pronounces[-1].voice_url
+        f = _download(sound_url)
+        for _ in range(times):
+            playsound(f.name)
+            sleep(1)
+    except:
+        pass
+
+def _download(sound):
+    try:
+        f = NamedTemporaryFile('w+b', prefix='temp_', suffix='.mp3')
+        conn = urlopen(sound)
+        f.write(conn.read())
+        conn.close()
+        # have to return reference since tempoorary file will be deleted after finishing method call
+        return f
+    except:
+        raise IOError('Unable to download sound named: ' + sound)  
+
 @click.command()
 @click.argument('word')
-@click.option('--example', default=5, type=int, help = "The number of detailed definitions and examples")
-def cli(word, example):
+@click.option('--example', '-e', default=5, type=int, help = "The number of detailed definitions and examples")
+@click.option('--pronounce', '-p', default=3, type=int, help = "The times of playing pronounce")
+def cli(word, example, pronounce):
     if not word:
         raise ValueError('please enter english word')
     translation = YoudaoTranslator().translate(word)
     _magic(word, translation, example)
+    _play_sound(translation, pronounce)
 
 if __name__ == "__main__":
     cli()
