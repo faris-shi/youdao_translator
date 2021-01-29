@@ -12,13 +12,14 @@ requirements = [
     'click',
     'rich',
     'requests',
+    'playsound'
 ]
 
 name = 'youdao_translator'
 
 setup(
     name = name,
-    version = '1.0.0',
+    version = '1.0.1',
     packages = find_packages(),
     description = 'simple approach to translate English to Chinese by youdao-translator-cli',
     long_description = long_description,

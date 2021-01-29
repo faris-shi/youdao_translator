@@ -29,6 +29,7 @@ youdao-trans-cli [word]
 - click
 - rich
 - requests
+- playsound
 
 ## Try it without installing
 
